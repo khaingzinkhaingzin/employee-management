@@ -9,21 +9,6 @@
     @include('layouts.partials.css')
 
     <style>
-        .select2-container--default .select2-selection--multiple .select2-selection__choice {
-            background-color: #fffefe;
-            border: 1px solid #408c37;
-            border-radius: 15px;
-        }
-
-        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove,
-        .select2-container .select2-selection--multiple .select2-selection__choice {
-            color: #408c37;
-        }
-
-        .select2-container .select2-selection--multiple .select2-selection__choice {
-            font-size: 14px;
-        }
-
         .loader {
             position: absolute;
             top: 0;
@@ -35,9 +20,9 @@
         }
         .loader img {
             position: fixed;
-            width: 150px;
+            width: 50px;
             top: 30%;
-            left: 45%;
+            left: 50%;
         }
 
         mark {
@@ -89,8 +74,6 @@
     @include('layouts.partials.script')
     <!--end::scripts -->
 
-    {{-- @stack('scripts') --}}
-
     <script>
         window.addEventListener('load', (event) => {
             var loader = document.querySelector(".loader");
@@ -120,25 +103,10 @@
             } 
         }
 
-        function toggleActive(table, id) {
-            $.ajax({
-                url: '/admin/toggle-active',
-                data: {
-                    table,
-                    id
-                },
-                dataType: 'JSON',
-                success: function(res) {
-                    if (res.status == 'success') {
-                        toastr.success(res.message);
-                    }
-                    else {
-                        toastr.error(res.message);
-                    }
-                    table.ajax.reload();
-                },
-            });
-        }
+        $('#ajaxModal').on('shown.bs.modal', function() {
+            let input = document.getElementById('text');
+            setPosition(input, input.value.length);
+        });
 
     </script>
 </body>

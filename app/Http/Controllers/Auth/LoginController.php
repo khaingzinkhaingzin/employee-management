@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Http\Request;
+
 class LoginController extends Controller
 {
     /*
@@ -45,5 +47,14 @@ class LoginController extends Controller
         return redirect()
         ->route('login')
         ->with('status','Admin has been logged out!');
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        // if ( $user->isAdmin() )
+        //     return redirect()->route('dashboard');
+        // }
+
+        return redirect()->route('admin.company.index');
     }
 }

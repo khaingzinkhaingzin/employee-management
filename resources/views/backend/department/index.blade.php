@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
-@parent | Department
-@stop
-
-@section('header', 'Department')
+@section('title', 'Department')
 
 @section('css')
 @parent
@@ -15,6 +11,12 @@
     #table_data td {
         vertical-align: middle;
     }
+    .card-header {
+        background: #eee;
+    }
+    .card-header:first-child {
+        border-radius: 0;
+    }
 </style>
 @stop
 
@@ -23,10 +25,10 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Department</h3>
+                <h3 class="card-title">Department List</h3>
                 <div class="card-tools mr-0">
-                    @can('department-create')
-                    <a href="{{ route('admin.department.create') }}" class="btn btn-success btn-sm"><i class="fa fa-plus mx-1"></i> New Department </a>
+                    @can('create-department')
+                    <a data-href="{{ route('admin.department.create')}}" href="#" class="float-right btn btn-success btn-sm" id="newButton"><i class="fa fa-plus mx-1"></i> create department</a>
                     @endcan
                 </div>
             </div>
@@ -51,9 +53,6 @@
                                 </div>
                             </div>
                         </form>
-                        @can('create-department')
-                        <a data-href="{{ route('admin.department.create')}}" href="#" class="float-right btn btn-success btn-sm" id="newButton"><i class="fa fa-plus mx-1"></i> create department</a>
-                        @endcan
                     </div>
                 </div>
 
@@ -66,7 +65,9 @@
                                     <tr class="bg-info">
                                         <th>No#</th>
                                         <th>Name</th>
+                                        @if (auth()->user()->hasRole('Admin'))
                                         <th>Action</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody id="table_data"></tbody>
@@ -102,6 +103,9 @@
 
         function fetchData(page = 1) {
             let data = getRequestFilters();
+            if (data.keyword != null) {
+                $("#table_data").mark(data.keyword);
+            }
             data.page = page;
             $.ajax({
                 url: "/admin/department",
@@ -120,14 +124,15 @@
             });
         }
 
-        $(document).on('click', '.pagination a', function(event){
-			event.preventDefault(); 
+        $(document).on('click', '.pagination a', function(e){
+			e.preventDefault(); 
 			var page = $(this).attr('href').split('page=')[1];
 			fetchData(page);
 		});
 
         // show create modal form
         $(document).on('click', '#newButton', function(e) {
+            e.preventDefault(); 
             let modal = $('#ajaxModal');
             let container = $('#ajaxModal .modal-body');
             let url = $(this).data('href');
@@ -141,7 +146,8 @@
             });
         });
 
-        $(document).on('click', '.edit', function() {
+        $(document).on('click', '.edit', function(e) {
+            e.preventDefault(); 
             let modal = $('#ajaxModal');
             let container = $('#ajaxModal .modal-body');
             let url = $(this).data('href');
@@ -195,6 +201,8 @@
 
         $('#keyword').keyup(function(){
 			fetchData();
+            let keyword = $('#keyword').val();
+            $("#table_data").mark(keyword);
 		});
 
         $('body').on('change', '#limits', function(){

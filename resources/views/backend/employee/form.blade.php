@@ -20,18 +20,18 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label for="">First Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="text" name="first_name" @if (isset($old_data)) value="{{ $old_data->first_name }}" @endif autofocus>
+                    <input type="text" class="form-control" id="text" name="first_name" @if (isset($old_data)) value="{{ $old_data->first_name }}" @endif autofocus="">
                 </div>
                 <div class="form-group">
                     <label for="">Last Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="text" name="last_name" @if (isset($old_data)) value="{{ $old_data->last_name }}" @endif autofocus>
+                    <input type="text" class="form-control" name="last_name" @if (isset($old_data)) value="{{ $old_data->last_name }}" @endif >
                 </div>
                 <div class="form-group">
                     <label for="">Company</label>
                     <select name="company_id" class="form-control select2">
                         <option value="">Choose Company</option>
                         @foreach ($companies as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
+                        <option value="{{ $key }}" @if (isset($old_data) && $old_data->company_id == $key) selected @endif>{{ $value }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -40,17 +40,25 @@
                     <select name="department_id" class="form-control select2">
                         <option value="">Choose Department</option>
                         @foreach ($departments as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
+                        <option value="{{ $key }}" @if (isset($old_data) && $old_data->department_id == $key) selected @endif>{{ $value }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="">Staff ID</label>
+                    <input type="text" class="form-control" name="staff_id" value="{{ old('staff_id', isset($old_data) ? $old_data->staff_id : '') }}" @if (isset($old_data)) value="{{ $old_data->staff_id }}" @endif >
+                </div>
+                <div class="form-group">
                     <label for="">Email</label>
-                    <input type="email" class="form-control" name="email" @if (isset($old_data)) value="{{ $old_data->email }}" @endif autofocus>
+                    <input type="email" class="form-control" name="email" @if (isset($old_data)) value="{{ $old_data->email }}" @endif >
+                </div>
+                <div class="form-group">
+                    <label for="">Password</label>
+                    <input type="password" class="form-control" name="password">
                 </div>
                 <div class="form-group">
                     <label for="">Phone</label>
-                    <input type="number" class="form-control" name="phone">
+                    <input type="number" class="form-control" name="phone" @if (isset($old_data)) value="{{ $old_data->phone }}" @endif >
                 </div>
                 <div class="form-group">
                     <label for="">Address</label>

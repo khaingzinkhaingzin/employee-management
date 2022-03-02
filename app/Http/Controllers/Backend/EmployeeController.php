@@ -17,9 +17,6 @@ class EmployeeController extends Controller
 {
     public function index(Request $request)
     {
-        if (!auth()->user()->can('read-employee')) {
-            abort(403);
-        }
 
         if ($request->ajax()) {
             $companies = Employee::query();
@@ -29,7 +26,11 @@ class EmployeeController extends Controller
                 $companies->orderBy('updated_at', 'desc')
                 ->where('first_name', 'like', '%' . $keyword . '%')
                 ->orWhere('last_name', 'like', '%' . $keyword . '%')
+                ->orWhere('staff_id', 'like', '%' . $keyword . '%')
                 ->orWhereHas('company', function($query) use ($keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                })
+                ->orWhereHas('department', function($query) use ($keyword) {
                     $query->where('name', 'like', '%' . $keyword . '%');
                 });
             }
@@ -45,6 +46,11 @@ class EmployeeController extends Controller
             ]);
         }
         return view('backend.employee.index');
+    }
+
+    public function show($id) {
+        $item = Employee::with('company', 'department')->findOrFail($id);
+        return view('backend.employee.show', compact('item'));
     }
 
     public function create()

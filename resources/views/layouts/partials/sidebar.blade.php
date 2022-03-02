@@ -3,19 +3,9 @@
         <div id="sidebar-menu">
             <ul class="metismenu" id="side-menu">
                 <li>
-                    <a href="" class="waves-effect waves-light">
-                        {{-- <a href="{{ url('admin.dashboard')}}" class="waves-effect waves-light"> --}}
+                    <a href="{{ route('admin.company.index')}}" class="waves-effect waves-light">
                         <i class="fa fa-desktop" aria-hidden="true"></i><span>  Dashboard  </span>
                     </a>
-                </li>
-                <li>
-                    <a href="" class="waves-effect waves-light"><i class="fas fa-user"></i> User</a>
-                </li>
-                <li>
-                    <a href="{{ url('admin.roles.index')}}" class="waves-effect waves-light"><i class="fas fa-user-shield nav-icon"></i> Role</a>
-                </li>
-                <li>
-                    <a href="{{ url('admin.permissions.index')}}" class="waves-effect waves-light"><i class="fas fa-shield-alt"></i> Permission</a>
                 </li>
                 <li>
                     <a href="javascript: void(0);" class="waves-effect waves-light">

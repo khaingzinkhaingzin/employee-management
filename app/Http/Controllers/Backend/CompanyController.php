@@ -13,10 +13,6 @@ class CompanyController extends Controller
 {
     public function index(Request $request)
     {
-        if (!auth()->user()->can('read-company')) {
-            abort(403);
-        }
-
         if ($request->ajax()) {
             $companies = Company::query();
 

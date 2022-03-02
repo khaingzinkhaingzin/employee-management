@@ -14,14 +14,16 @@ class UpdateEmployee extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255'
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255'
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Please fill company name.'
+            'first_name.required' => 'Please fill first name.',
+            'last_name.required' => 'Please fill last name.'
         ];
     }
 }

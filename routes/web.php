@@ -13,15 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::prefix('admin')->name('admin.')->namespace('Backend')->middleware('auth')->group(function() {
+	Route::get('/', function () {
+	    return redirect()->route('admin.company.index');
+	})->middleware('auth');
     Route::resource('company', 'CompanyController');
     Route::resource('department', 'DepartmentController');
     Route::resource('employee', 'EmployeeController');

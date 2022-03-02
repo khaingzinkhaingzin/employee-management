@@ -13,10 +13,6 @@ class DepartmentController extends Controller
 {
     public function index(Request $request)
     {
-        if (!auth()->user()->can('read-department')) {
-            abort(403);
-        }
-
         if ($request->ajax()) {
             $departments = Department::query();
 

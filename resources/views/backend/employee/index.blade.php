@@ -1,10 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
-@parent | employee
-@stop
-
-@section('header', 'employee')
+@section('title', 'Employee')
 
 @section('css')
 @parent
@@ -15,6 +11,12 @@
     #table_data td {
         vertical-align: middle;
     }
+    .card-header {
+        background: #eee;
+    }
+    .card-header:first-child {
+        border-radius: 0;
+    }
 </style>
 @stop
 
@@ -23,10 +25,10 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Employee</h3>
+                <h3 class="card-title">Employee List</h3>
                 <div class="card-tools mr-0">
-                    @can('employee-create')
-                    <a href="{{ route('admin.employee.create') }}" class="btn btn-success btn-sm"><i class="fa fa-plus mx-1"></i> New employee </a>
+                    @can('create-employee')
+                    <a data-href="{{ route('admin.employee.create')}}" href="#" class="float-right btn btn-success btn-sm" id="newButton"><i class="fa fa-plus mx-1"></i> create employee</a>
                     @endcan
                 </div>
             </div>
@@ -51,9 +53,6 @@
                                 </div>
                             </div>
                         </form>
-                        @can('create-employee')
-                        <a data-href="{{ route('admin.employee.create')}}" href="#" class="float-right btn btn-success btn-sm" id="newButton"><i class="fa fa-plus mx-1"></i> create employee</a>
-                        @endcan
                     </div>
                 </div>
 
@@ -106,6 +105,9 @@
 
         function fetchData(page = 1) {
             let data = getRequestFilters();
+            if (data.keyword != null) {
+                $("#table_data").mark(data.keyword);
+            }
             data.page = page;
             $.ajax({
                 url: "/admin/employee",
@@ -132,6 +134,7 @@
 
         // show create modal form
         $(document).on('click', '#newButton', function(e) {
+            e.preventDefault(); 
             let modal = $('#ajaxModal');
             let container = $('#ajaxModal .modal-body');
             let url = $(this).data('href');
@@ -145,7 +148,8 @@
             });
         });
 
-        $(document).on('click', '.edit', function() {
+        $(document).on('click', '.edit', function(e) {
+            e.preventDefault(); 
             let modal = $('#ajaxModal');
             let container = $('#ajaxModal .modal-body');
             let url = $(this).data('href');
@@ -199,6 +203,8 @@
 
         $('#keyword').keyup(function(){
 			fetchData();
+            let keyword = $('#keyword').val();
+            $("#table_data").mark(keyword);
 		});
 
         $('body').on('change', '#limits', function(){

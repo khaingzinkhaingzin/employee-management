@@ -8,8 +8,6 @@
     <!-- App css -->
     @include('layouts.partials.css')
 
-    
-    </style>
 </head>
 
 <body>
@@ -17,7 +15,7 @@
 
         @yield('content')  
 
-      </div>
+     </div>
 </body>
 
 </html>
